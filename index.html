@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    
+    <meta charset="utf-8" />
+    <style>
+      body {
+        margin: 0;
+      }
+
+      canvas {
+        background: greenyellow;
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    
+    <canvas id="canvas"></canvas>
+    <script>
+        function sharpener(canvas) {
+          const dpr = window.devicePixelRatio;
+          const rect = canvas.getBoundingClientRect();
+          canvas.width = rect.width * dpr;
+          canvas.height = rect.height * dpr;
+          canvas.getContext("2d").scale(dpr, dpr);
+          canvas.style.width = `${rect.width}px`;
+          canvas.style.height = `${rect.height}px`;
+        }
+        console.clear();
+        const ww = window.innerWidth;
+        const wh = window.innerHeight;
+
+        const canvas = document.querySelector("#canvas");
+        canvas.width = ww;
+        canvas.height = wh;
+        const ctx = canvas.getContext("2d");
+        sharpener(canvas);
+
+        let framesPerSecond = 60;
+        let size=200
+        let wink = Math.random()*10
+
+        let x = 20;
+        let y = 30;
+        var xBall = (Math.random() * ww);
+        var yBall = (Math.random() * wh);
+        var xSpeed = wink
+        var ySpeed = -wink
+
+        function move() {
+          setTimeout(function() {
+      
+          ctx.clearRect(0, 0, ww, wh);
+          //ctx.translate(ww/2,wh/2)
+          ctx.fillStyle = "red";
+          ctx.beginPath();
+          //ctx.fillRect(x, y, 150, 100);
+          //ctx.arc(x, y, 15, 0, Math.PI * 2)
+          //ctx.fill();
+          //x += 1
+          //y += 1
+          //var yBall = y
+          //console.log(RBall);
+
+          xBall += xSpeed
+          yBall += ySpeed
+          console.log(xBall);
+          console.log(yBall);
+
+          ctx.rect(ww/2,wh/2,size,size)
+          ctx.arc(xBall, yBall, 15, 0, Math.PI * 2);
+          if (xBall > ww - 15 / 2 || xBall < 15 / 2) {
+            xSpeed *= -1;
+          }
+          if (yBall > wh - 15 / 2 || yBall < 15 / 2) {
+            ySpeed *= -1;
+          }
+          console.log(xSpeed);
+          console.log(ySpeed);
+          if (((xBall > ww/2) && (xBall < ww/2+size)) && (yBall > wh/2 && yBall < (ww/2)+size) ){
+            /*
+            if ((xSpeed<0) && (ySpeed<0)){
+              xSpeed *= -1;
+              ySpeed *= 1;
+            }
+            else{
+              xSpeed *= 1;
+              ySpeed *= -1;
+              
+            }
+            
+            if ((ySpeed>0)&&(xSpeed>0)){
+              ySpeed *= -1;
+              xSpeed *= 1;
+            }
+            else{
+              ySpeed *= 1;
+              xSpeed *= -1;
+              
+            }
+            */
+            wink = Math.random(10)+1
+            ySpeed *= -1;
+            xSpeed *= -1;
+            console.log(wink);
+          }
+         
+          
+          ctx.fill();
+          window.requestAnimationFrame(move);
+          wink=Math.random()*10
+        
+        },1000 / framesPerSecond)
+      }
+      
+      move();
+    </script>
+  </body>
+
+
+</html>
